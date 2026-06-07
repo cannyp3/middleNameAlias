@@ -28,5 +28,3 @@ For example, the app notes that a label such as `ExampleShop` can be converted i
 ## Security note
 
 This project should be treated as an obfuscation utility, not a password manager, encryption tool, or security product. Because the transformation is intentionally simple and optimized for memorability, it should not be relied on to protect sensitive credentials, regulated data, or confidential identifiers.
-
- not require strong protection. It is less appropriate anywhere formal security, enterprise authentication, or irreversible anonymization is required. [file:1]
