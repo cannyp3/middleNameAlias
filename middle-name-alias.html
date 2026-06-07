@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Middle Name Alias Encoder</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --space-1: .25rem; --space-2: .5rem; --space-3: .75rem; --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-12: 3rem; --space-16: 4rem;
+      --color-bg:#f7f6f2; --color-surface:#f9f8f5; --color-surface-2:#fbfbf9; --color-surface-offset:#f3f0ec; --color-border:#d4d1ca; --color-divider:#dcd9d5;
+      --color-text:#28251d; --color-text-muted:#65635d; --color-text-faint:#8d8b85; --color-text-inverse:#f9f8f4;
+      --color-primary:#01696f; --color-primary-hover:#0c4e54; --color-primary-highlight:#cedcd8; --color-error:#a12c7b;
+      --radius-sm:.375rem; --radius-md:.5rem; --radius-lg:.75rem; --radius-xl:1rem; --radius-full:9999px;
+      --shadow-sm:0 1px 2px rgba(28,25,20,.06); --shadow-md:0 8px 24px rgba(28,25,20,.09);
+      --font-body:'Satoshi', Inter, sans-serif;
+      --transition:180ms cubic-bezier(.16,1,.3,1);
+    }
+    [data-theme="dark"] {
+      --color-bg:#171614; --color-surface:#1c1b19; --color-surface-2:#201f1d; --color-surface-offset:#23211e; --color-border:#393836; --color-divider:#262523;
+      --color-text:#cdccca; --color-text-muted:#9a9894; --color-text-faint:#787672; --color-text-inverse:#171614;
+      --color-primary:#4f98a3; --color-primary-hover:#227f8b; --color-primary-highlight:#313b3b; --color-error:#d163a7;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.2); --shadow-md:0 10px 28px rgba(0,0,0,.28);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{-webkit-text-size-adjust:none;text-size-adjust:none;scroll-behavior:smooth}
+    body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);line-height:1.6;background:var(--color-bg);color:var(--color-text)}
+    button,input,textarea{font:inherit;color:inherit}
+    a,button,input,textarea{transition:background var(--transition),border-color var(--transition),color var(--transition),box-shadow var(--transition)}
+    :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm)}
+    .shell{max-width:1100px;margin:0 auto;padding:var(--space-6) var(--space-4) var(--space-12)}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:var(--space-4);margin-bottom:var(--space-8)}
+    .brand{display:flex;align-items:center;gap:var(--space-3);font-size:var(--text-sm);font-weight:700;letter-spacing:.02em}
+    .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--color-primary-highlight),transparent 60%), var(--color-surface-offset);display:grid;place-items:center;border:1px solid var(--color-border);box-shadow:var(--shadow-sm)}
+    .logo svg{width:22px;height:22px;color:var(--color-primary)}
+    .theme-toggle{min-width:44px;min-height:44px;border:1px solid var(--color-border);border-radius:var(--radius-full);display:grid;place-items:center;background:var(--color-surface)}
+    .hero{display:grid;grid-template-columns:1.3fr .9fr;gap:var(--space-6);align-items:start}
+    .card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm)}
+    .panel{padding:var(--space-6)}
+    h1{font-size:var(--text-xl);line-height:1.1;letter-spacing:-.03em;margin-bottom:var(--space-4)}
+    h2{font-size:var(--text-lg);line-height:1.15;margin-bottom:var(--space-4)}
+    p{max-width:68ch;color:var(--color-text-muted)}
+    .lede{margin-bottom:var(--space-5)}
+    .notice{margin-top:var(--space-5);padding:var(--space-4);background:var(--color-surface-offset);border-radius:var(--radius-lg);border:1px solid var(--color-divider);font-size:var(--text-sm)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)}
+    .field{display:flex;flex-direction:column;gap:var(--space-2)}
+    label{font-size:var(--text-sm);font-weight:700;color:var(--color-text)}
+    input,textarea{width:100%;padding:.8rem .95rem;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:var(--color-surface-2)}
+    input::placeholder,textarea::placeholder{color:var(--color-text-faint)}
+    .actions{display:flex;flex-wrap:wrap;gap:var(--space-3);margin-top:var(--space-5)}
+    .btn{min-height:44px;padding:.8rem 1rem;border-radius:var(--radius-lg);border:1px solid transparent;font-size:var(--text-sm);font-weight:700}
+    .btn-primary{background:var(--color-primary);color:var(--color-text-inverse)}
+    .btn-primary:hover{background:var(--color-primary-hover)}
+    .btn-secondary{background:var(--color-surface-offset);border-color:var(--color-border)}
+    .result{margin-top:var(--space-5);padding:var(--space-5);border-radius:var(--radius-lg);background:var(--color-surface-offset);border:1px dashed var(--color-border)}
+    .alias{font-size:clamp(1.3rem,1rem + 1vw,2rem);font-weight:700;letter-spacing:.01em;color:var(--color-text);word-break:break-word}
+    .meta{font-size:var(--text-sm);color:var(--color-text-muted);margin-top:var(--space-2)}
+    .ok,.err{margin-top:var(--space-3);font-size:var(--text-sm)}
+    .err{color:var(--color-error)}
+    .ok{color:var(--color-primary)}
+    .stack{display:grid;gap:var(--space-4)}
+    .mini{font-size:var(--text-sm)}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92em;background:var(--color-surface-offset);padding:.1rem .35rem;border-radius:.35rem}
+    @media (max-width: 860px){.hero,.grid{grid-template-columns:1fr}.shell{padding-inline:var(--space-3)}}
+    @media (prefers-reduced-motion: reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-label="Alias mark">
+            <path d="M5 8.5c2.8-4.2 11.2-4.2 14 0" />
+            <path d="M5 15.5c2.8 4.2 11.2 4.2 14 0" />
+            <circle cx="12" cy="12" r="2.5" />
+          </svg>
+        </div>
+        <span>Middle Name Alias Encoder</span>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme"></button>
+    </div>
+
+    <div class="hero">
+      <section class="card panel">
+        <h1>Encode a website name into a plausible fake middle name.</h1>
+        <p class="lede">This app uses a reversible Vigenere-style cipher over letters only, then shapes the result into title case so it looks like a name rather than raw gibberish. It is meant for personal tagging and recall, not for serious privacy or cryptography.</p>
+        <div class="notice">Example: with a secret phrase and a site label like <code>ExampleShop</code>, the app can output something like <code>Marolen</code>. Using the same secret phrase later, you can decode that alias back to the original site label.</div>
+      </section>
+
+      <aside class="card panel stack">
+        <div>
+          <h2>How it works</h2>
+          <p class="mini">1. Normalize the website name to letters only. 2. Encrypt letters with your secret phrase. 3. Split into vowel-friendly chunks and title-case the result. 4. Store nothing locally.</p>
+        </div>
+        <div>
+          <h2>Limits</h2>
+          <p class="mini">Secret phrase: 2-32 characters. Website label: 2-24 letters after cleanup. The alias preserves reversibility but still may look unusual on strict forms.</p>
+        </div>
+      </aside>
+    </div>
+
+    <section class="card panel" style="margin-top: var(--space-6);">
+      <div class="grid">
+        <div class="field">
+          <label for="secret">Secret phrase</label>
+          <input id="secret" maxlength="32" placeholder="Your shared key" />
+        </div>
+        <div class="field">
+          <label for="site">Website or company name</label>
+          <input id="site" maxlength="40" placeholder="Acme Travel" />
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" id="encodeBtn" type="button">Encode alias</button>
+        <button class="btn btn-secondary" id="decodeBtn" type="button">Decode alias</button>
+        <button class="btn btn-secondary" id="swapBtn" type="button">Use alias as input</button>
+        <button class="btn btn-secondary" id="clearBtn" type="button">Clear</button>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="alias" id="result">Waiting for input</div>
+        <div class="meta" id="meta">Alias output appears here.</div>
+        <div class="ok" id="ok"></div>
+        <div class="err" id="err"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const letters = 'abcdefghijklmnopqrstuvwxyz';
+    const vowels = new Set(['a','e','i','o','u','y']);
+    const secretEl = document.getElementById('secret');
+    const siteEl = document.getElementById('site');
+    const resultEl = document.getElementById('result');
+    const metaEl = document.getElementById('meta');
+    const okEl = document.getElementById('ok');
+    const errEl = document.getElementById('err');
+
+    (function(){
+      const t=document.querySelector('[data-theme-toggle]');
+      const r=document.documentElement;
+      let d=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+      function paint(){
+        r.setAttribute('data-theme',d);
+        t.innerHTML = d==='dark'
+          ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+          : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+      }
+      paint();
+      t.addEventListener('click',()=>{d=d==='dark'?'light':'dark';paint();});
+    })();
+
+    function cleanLetters(text) {
+      return (text || '').toLowerCase().replace(/[^a-z]/g, '');
+    }
+
+    function keyStream(secret, n) {
+      const cleaned = cleanLetters(secret);
+      if (cleaned.length < 2) throw new Error('Secret phrase must contain at least 2 letters.');
+      return cleaned.repeat(Math.ceil(n / cleaned.length)).slice(0, n);
+    }
+
+    function shift(ch, keyCh, dir) {
+      const a = letters.indexOf(ch);
+      const b = letters.indexOf(keyCh);
+      if (a < 0 || b < 0) throw new Error('Unexpected non-letter during cipher step.');
+      const val = dir === 1 ? (a + b) % 26 : (a - b + 26) % 26;
+      return letters[val];
+    }
+
+    function encodeCore(plain, secret) {
+      const source = cleanLetters(plain);
+      if (source.length < 2) throw new Error('Website name must contain at least 2 letters.');
+      if (source.length > 24) throw new Error('Website name is too long after cleanup; keep it to 24 letters or fewer.');
+      const ks = keyStream(secret, source.length);
+      return source.split('').map((ch, i) => shift(ch, ks[i], 1)).join('');
+    }
+
+    function decodeCore(aliasLetters, secret) {
+      const source = cleanLetters(aliasLetters);
+      if (source.length < 2) throw new Error('Alias must contain at least 2 letters.');
+      const ks = keyStream(secret, source.length);
+      return source.split('').map((ch, i) => shift(ch, ks[i], -1)).join('');
+    }
+
+    function shapeAsName(raw) {
+      let out = '';
+      for (let i = 0; i < raw.length; i++) {
+        const ch = raw[i];
+        out += ch;
+        const next = raw[i + 1];
+        if (!next) continue;
+        const isBreak = ((i % 3) === 2 && vowels.has(ch) !== vowels.has(next)) || ((i % 4) === 3);
+        if (isBreak) out += ' ';
+      }
+      return out.split(/\s+/).filter(Boolean).map(s => s[0].toUpperCase() + s.slice(1)).join(' ');
+    }
+
+    function flattenAlias(nameLike) {
+      return cleanLetters(nameLike);
+    }
+
+    function setStatus(result, meta, ok='', err='') {
+      resultEl.textContent = result;
+      metaEl.textContent = meta;
+      okEl.textContent = ok;
+      errEl.textContent = err;
+    }
+
+    document.getElementById('encodeBtn').addEventListener('click', () => {
+      try {
+        const encoded = encodeCore(siteEl.value, secretEl.value);
+        const alias = shapeAsName(encoded);
+        setStatus(alias, `Normalized site label: ${cleanLetters(siteEl.value)} · Cipher letters: ${encoded}`, 'Reversible alias created.', '');
+      } catch (e) {
+        setStatus('Waiting for input', 'Alias output appears here.', '', e.message);
+      }
+    });
+
+    document.getElementById('decodeBtn').addEventListener('click', () => {
+      try {
+        const flattened = flattenAlias(siteEl.value);
+        const decoded = decodeCore(flattened, secretEl.value);
+        setStatus(decoded, `Decoded back to normalized website label from alias letters: ${flattened}`, 'Decoded successfully.', '');
+      } catch (e) {
+        setStatus('Waiting for input', 'Alias output appears here.', '', e.message);
+      }
+    });
+
+    document.getElementById('swapBtn').addEventListener('click', () => {
+      const current = resultEl.textContent;
+      if (current && current !== 'Waiting for input') {
+        siteEl.value = current;
+        setStatus(current, 'Copied the current result into the website field.', '', '');
+      }
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      secretEl.value = '';
+      siteEl.value = '';
+      setStatus('Waiting for input', 'Alias output appears here.', '', '');
+    });
+  </script>
+</body>
+</html>
